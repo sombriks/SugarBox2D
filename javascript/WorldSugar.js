@@ -17,38 +17,31 @@ function WorldSugar(cfg) {
 	// publish config options
 	this.cfg = cfg;
 
-	function mkFixture(shp, w, h) {
+	function mkBody(x, y, w, h, isDynamic, isCircle) {
 		var fixDef = new b2FixtureDef;
-		if (shp == 0) {
+		if (isCircle)
 			fixDef.shape = new b2CircleShape(w);
-		} else if (shp == 1) {
+		else {
 			fixDef.shape = new b2PolygonShape();
 			fixDef.shape.SetAsBox(w, h);
-		} 
+		}
 		fixDef.density = 1.0;
 		fixDef.friction = 0.1;
 		fixDef.restitution = 0.1;
-		return fixDef;
+		var bodyDef = new b2BodyDef();
+		bodyDef.type = isDynamic ? b2Body.b2_dynamicBody : b2Body.b2_staticBody;
+		bodyDef.position.Set(x, y);
+		var body = cfg.world.CreateBody(bodyDef);
+		body.CreateFixture(fixDef);
+		return body;
 	}
 
 	this.makeCircle = function(x, y, r, isDynamic) {
-		var fixDef = mkFixture(0, r);
-		var bodyDef = new b2BodyDef();
-		bodyDef.type = isDynamic ? b2Body.b2_dynamicBody : b2Body.b2_staticBody;
-		bodyDef.position.Set(x, y);
-		var body = cfg.world.CreateBody(bodyDef);
-		body.CreateFixture(fixDef);
-		return body;
+		return mkBody(x, y, r, 0, isDynamic, true);
 	};
 
 	this.makeBox = function(x, y, w, h, isDynamic) {
-		var fixDef = mkFixture(1, w, h);
-		var bodyDef = new b2BodyDef();
-		bodyDef.type = isDynamic ? b2Body.b2_dynamicBody : b2Body.b2_staticBody;
-		bodyDef.position.Set(x, y);
-		var body = cfg.world.CreateBody(bodyDef);
-		body.CreateFixture(fixDef);
-		return body;
+		return mkBody(x, y, w, h, isDynamic, false);
 	};
 
 	this.debugEnabled = function(b) {
@@ -65,7 +58,7 @@ function WorldSugar(cfg) {
 					| b2DebugDraw.e_jointBit // 
 					| b2DebugDraw.e_pairBit //
 			// | b2DebugDraw.e_centerOfMassBit //
-//			 | b2DebugDraw.e_aabbBit //
+			// | b2DebugDraw.e_aabbBit //
 			);
 		}
 		cfg.world.SetDebugDraw(debugDraw);
