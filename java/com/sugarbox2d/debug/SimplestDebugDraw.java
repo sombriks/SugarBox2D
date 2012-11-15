@@ -2,18 +2,15 @@ package com.sugarbox2d.debug;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Color3f;
-import org.jbox2d.common.IViewportTransform;
+import org.jbox2d.common.OBBViewportTransform;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 
 public class SimplestDebugDraw extends DebugDraw {
 
-	public SimplestDebugDraw(){
-		this(null);
-	}
-	
-	public SimplestDebugDraw(IViewportTransform viewport) {
-		super(viewport);
+	public SimplestDebugDraw() {
+		super(new OBBViewportTransform());
+	    viewportTransform.setYFlip(true);
 	}
 
 	@Override
