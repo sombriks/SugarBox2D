@@ -20,7 +20,7 @@ public class WorldSugar {
 		this.b2World = b2World;
 	}
 
-	private Body makeBody(int x, int y, int w, int h, boolean isDynamic,
+	private Body makeBody(int x, int y, float w, float h, boolean isDynamic,
 			boolean isCircle) {
 		BodyDef bd = new BodyDef();
 		bd.position = new Vec2(x, y);
@@ -40,19 +40,19 @@ public class WorldSugar {
 		return body;
 	}
 
-	public Body makeBox(int x, int y, int w, int h) {
+	public Body makeBox(int x, int y, float w, float h) {
 		return makeBox(x, y, w, h, false);
 	}
 
-	public Body makeBox(int x, int y, int w, int h, boolean isDynamic) {
+	public Body makeBox(int x, int y, float w, float h, boolean isDynamic) {
 		return makeBody(x, y, w, h, isDynamic, false);
 	}
 
-	public Body makeCircle(int x, int y, int r) {
+	public Body makeCircle(int x, int y, float r) {
 		return makeCircle(x, y, r, false);
 	}
 
-	public Body makeCircle(int x, int y, int r, boolean isDynamic) {
+	public Body makeCircle(int x, int y, float r, boolean isDynamic) {
 		return makeBody(x, y, r, 0, isDynamic, false);
 	}
 
