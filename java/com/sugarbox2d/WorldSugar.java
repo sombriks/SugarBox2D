@@ -1,7 +1,8 @@
 package com.sugarbox2d;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
+import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -11,16 +12,27 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
+import com.sugarbox2d.debug.SimplestDebugDraw;
+
 public class WorldSugar {
 
 	private World b2World;
 	private boolean running = true;
+	private JPanel panel;
+	private float scale;
 
-	public WorldSugar(World b2World, JComponent drawingArea) {
+	public WorldSugar(World b2World, JPanel panel, boolean debug, float scale) {
 		this.b2World = b2World;
+		this.panel = panel;
+		this.scale = scale;
+		debugEnabled(debug);
 	}
 
-	private Body makeBody(int x, int y, float w, float h, boolean isDynamic,
+	public WorldSugar(World b2World, JPanel panel, float scale) {
+		this(b2World, panel, false, 0.1f);
+	}
+
+	private Body makeBody(float x, float y, float w, float h, boolean isDynamic,
 			boolean isCircle) {
 		BodyDef bd = new BodyDef();
 		bd.position = new Vec2(x, y);
@@ -40,30 +52,30 @@ public class WorldSugar {
 		return body;
 	}
 
-	public Body makeBox(int x, int y, float w, float h) {
+	public Body makeBox(float x, float y, float w, float h) {
 		return makeBox(x, y, w, h, false);
 	}
 
-	public Body makeBox(int x, int y, float w, float h, boolean isDynamic) {
+	public Body makeBox(float x, float y, float w, float h, boolean isDynamic) {
 		return makeBody(x, y, w, h, isDynamic, false);
 	}
 
-	public Body makeCircle(int x, int y, float r) {
-		return makeCircle(x, y, r, false);
+	public Body makeCircle(float x, float y, float r) {
+		return makeCircle(x, y, r, true);
 	}
 
-	public Body makeCircle(int x, int y, float r, boolean isDynamic) {
-		return makeBody(x, y, r, 0, isDynamic, false);
+	public Body makeCircle(float x, float y, float r, boolean isDynamic) {
+		return makeBody(x, y, r, 0, isDynamic, true);
 	}
 
-//	public void debugEnabled(boolean b) {
-//		DebugDraw d = null;
-//		if (b) {
-//			b2World.setDebugDraw(new SimplestDebugDraw());
-//			// FIXME terminar a implementação de debugdraw
-//		}
-//		b2World.setDebugDraw(d);
-//	}
+	public void debugEnabled(boolean b) {
+		DebugDraw d = null;
+		if (b) {
+			b2World.setDebugDraw(new SimplestDebugDraw(panel, scale));
+			// FIXME terminar a implementação de debugdraw
+		}
+		b2World.setDebugDraw(d);
+	}
 
 	public void running(boolean running) {
 		this.running = running;
