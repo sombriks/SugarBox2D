@@ -1,7 +1,9 @@
 package com.sugarbox2d.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,16 @@ public class Demo1 {
 		final float escala = 10;
 		final List<BasicActorSugar> actorList = new ArrayList<BasicActorSugar>();
 		final JFrame jf = new JFrame("Demo 1");
-		final JPanel jp = new JPanel();
+		final BufferedImage layer = new BufferedImage(800, 600,
+				BufferedImage.TYPE_INT_ARGB);
+		final JPanel jp = new JPanel() {
+			private static final long serialVersionUID = 6717044781852159689L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				g.drawImage(layer, 0, 0, null);
+			}
+		};
 		jf.setLayout(new BorderLayout());
 		jf.add(jp, BorderLayout.CENTER);
 		jf.setSize(800, 600);
@@ -35,7 +46,7 @@ public class Demo1 {
 				getClass().getResourceAsStream("box.jpg"));
 
 		final World world = new World(new Vec2(0, 0), true);
-		final WorldSugar ws = new WorldSugar(world, jp, escala);
+		final WorldSugar ws = new WorldSugar(world, escala);
 
 		// create ground
 		ws.makeBox(0.5f, 0.5f, 50f, 0.2f);// up
@@ -44,7 +55,7 @@ public class Demo1 {
 		ws.makeBox(50f, 0.5f, 0.2f, 20f);// right
 
 		final BasicActorSugar jogador = new BasicActorSugar(//
-				ws.makeCircle(50, 50, 1.3f, true), jp, awesome, escala);
+				ws.makeCircle(50, 50, 1.3f, true), layer, awesome, escala);
 		actorList.add(jogador);
 		// create some objects
 		int i = 100;
@@ -56,19 +67,21 @@ public class Demo1 {
 			float r = (float) Math.random();
 			if (r < 0.5)
 				actorList.add(new BasicActorSugar(ws.makeBox(x, y, w, h, true),//
-						jp, box, escala));
+						layer, box, escala));
 			else
 				actorList.add(new BasicActorSugar(ws.makeCircle(x, y, w, true),//
-						jp, bigball, escala));
+						layer, bigball, escala));
 		}
 
 		jf.setVisible(true);
 		while (true) {
-			jp.getGraphics().clearRect(0, 0, jp.getWidth(), jp.getHeight());
+			layer.getGraphics().clearRect(0, 0, layer.getWidth(),
+					layer.getHeight());
 			ws.step();
 			for (BasicActorSugar a : actorList)
 				a.step();
 			Thread.sleep(1000 / 60);
+
 		}
 	}
 

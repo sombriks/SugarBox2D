@@ -2,8 +2,7 @@ package com.sugarbox2d;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-
-import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -12,11 +11,11 @@ import org.jbox2d.dynamics.Body;
 public class BasicActorSugar {
 
 	private Body body;
-	private JPanel panel;
+	private BufferedImage panel;
 	private Image img;
 	private float scale;
 
-	public BasicActorSugar(Body body, JPanel panel, Image img, float scale) {
+	public BasicActorSugar(Body body, BufferedImage panel, Image img, float scale) {
 		this.scale = scale;
 		this.panel = panel;
 		this.body = body;
@@ -38,6 +37,8 @@ public class BasicActorSugar {
 			Vec2[] v2 = shp.getVertices();
 			w = (float) Math.sqrt(v2[0].x * v2[0].x);
 			h = (float) Math.sqrt(v2[0].y * v2[0].y);
+			break;
+		default:
 			break;
 		}
 		Graphics2D g2 = (Graphics2D) panel.getGraphics();
