@@ -14,7 +14,7 @@ var wm = new WorldSugar({
 
 var jogador = new BasicActorSugar({
 	body : wm.makeCircle(10, 10, 1.1, 1.1, true),
-	image : "../assets/awesome.png",
+	image : "../images/awesome.png",
 	scale : _escala,
 	ctx : ctx
 });
@@ -52,14 +52,14 @@ for ( var i = 0; i < 100; ++i) {
 	if (r < 0.5)
 		actorList.push(new BasicActorSugar({
 			body : wm.makeBox(x, y, w, h, true),
-			image : "../assets/box.jpg",
+			image : "../images/box.jpg",
 			scale : _escala,
 			ctx : ctx
 		}));
 	else
 		actorList.push(new BasicActorSugar({
 			body : wm.makeCircle(x, y, w, true),
-			image : "../assets/bigball.png",
+			image : "../images/bigball.png",
 			scale : _escala,
 			ctx : ctx
 		}));
