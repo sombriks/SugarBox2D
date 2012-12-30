@@ -50,8 +50,11 @@ function BasicActorSugar(cfg) {
 		cfg.ctx.save();
 		cfg.ctx.translate(px, py);
 		cfg.ctx.rotate(a);
-		// the image is a circle. We trust it.
-		cfg.ctx.drawImage(img, -w, -h, w * 2, h * 2);
+		try{
+			cfg.ctx.drawImage(img, -w, -h, w * 2, h * 2);
+		}catch(ohno){
+			// maybe image not found...
+		}
 		cfg.ctx.restore();
 	};
 }
